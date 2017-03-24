@@ -1,0 +1,36 @@
+        SELECT DISTINCT RL.NO_MATR  , PERSO.NO_RN       
+        FROM RL10.HISTO RL                              
+        LEFT JOIN SENS.PERSONNE PERSO                   
+        ON  PERSO.NO_MATR = RL.NO_MATR                  
+      WHERE                                             
+      (  (  RL.NO_MATR >=  :MATR-DEB-SEL                
+        AND RL.NO_MATR <=  :MATR-FIN-SEL                
+        AND DT_DEBUT   >= :DT-DEB-TRIM                  
+        AND DT_FIN     <= :DT-FIN-TRIM                  
+      AND  (AA_LIQU  MM_LIQU <= :AAMM-LIQ-FIN           
+        AND AA_LIQU  MM_LIQU >= :AAMM-LIQ-DEB))         
+        AND CO_BAREME <> '100'                          
+        AND (NO_LIQU < '80' OR NO_LIQU > '89')          
+        AND CO_GREV <> '6'                              
+        AND (CO_TRANSAC = '04' OR                       
+             CO_TRANSAC = '05' OR                       
+             CO_TRANSAC = '06' OR                       
+             CO_TRANSAC = '58' OR                       
+             CO_TRANSAC = '68' OR                       
+             CO_TRANSAC = '43' OR                       
+             CO_TRANSAC = '73' OR                       
+             CO_TRANSAC = '48' OR                       
+             CO_TRANSAC = '78' OR                       
+             CO_TRANSAC = '54' OR                       
+             CO_TRANSAC = '64' )                        
+        AND NOT (CO_RET_SOC = '0'                       
+                AND CO_RET_AMS = '0' )                  
+        AND SUBSTR(PERSO.TE_NOM , 2 , 1 ) <> '*')       
+--------CODES ROUGES-----                               
+         OR (                                           
+            AND DT_DEBUT >= :DT-DEB-TRIM                
+            AND DT_FIN   <= :DT-FIN-TRIM                
+         AND ((NO_LIQU = '18' OR NO_LIQU = '48'         
+                              OR NO_LIQU = '78'         
+              OR NO_LIQU = '19' OR NO_LIQU = '49'       
+                              OR NO_LIQU = '79'         
